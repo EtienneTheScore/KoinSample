@@ -17,7 +17,7 @@ fun Scope.getSessionScope(): Scope {
 
 //region internal helper extensions
 @Synchronized
-fun Koin.getSessionScope(): Scope {
+internal fun Koin.getSessionScope(): Scope {
     return getOrCreateScope(SESSION_SCOPE_ID, named<SessionManager>())
 }
 
