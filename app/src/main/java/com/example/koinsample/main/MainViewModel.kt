@@ -2,8 +2,8 @@ package com.example.koinsample.main
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.example.koinsample.SessionManager
 import com.example.koinsample.koinLogger
+import com.example.session.SessionManager
 
 class MainViewModel(private val sessionManager: SessionManager) : ViewModel() {
 
@@ -17,15 +17,14 @@ class MainViewModel(private val sessionManager: SessionManager) : ViewModel() {
 
     val state = State(
         logs = koinLogger.logs,
-        logInOffText = if (sessionManager.isLogged) "LOG OUT" else "LOG IN",
-        isUserDetailsButtonEnabled = sessionManager.isLogged
+        logInOffText = if (sessionManager.isLoggedIn) "LOG OUT" else "LOG IN",
+        isUserDetailsButtonEnabled = sessionManager.isLoggedIn
     )
 
     fun onLogInOffClick() {
-        if (sessionManager.isLogged) {
-            sessionManager.logOff()
-        } else {
-            sessionManager.logIn()
+        when (sessionManager) {
+            is SessionManager.Logged -> sessionManager.logOff()
+            is SessionManager.Unlogged -> sessionManager.logIn()
         }
         reload()
     }
