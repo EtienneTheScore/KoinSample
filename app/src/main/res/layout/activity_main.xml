@@ -20,7 +20,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="Log In"
+            android:onClick="@{() -> viewmodel.onLogInOffClick()}"
+            android:text="@{viewmodel.state.logInOffText}"
             app:layout_constraintEnd_toStartOf="@+id/user_button"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
@@ -34,6 +35,8 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
+            android:enabled="@{viewmodel.state.isUserDetailsButtonEnabled}"
+            android:onClick="@{() -> viewmodel.onUserDetailsClick()}"
             android:text="User Details"
             app:layout_constraintBottom_toBottomOf="@+id/log_in_out_button"
             app:layout_constraintEnd_toEndOf="parent"
@@ -44,7 +47,7 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/logs_rv"
-            items="@{viewmodel.logs}"
+            items="@{viewmodel.state.logs}"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="8dp"

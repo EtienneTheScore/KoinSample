@@ -16,6 +16,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        viewModel.reload = ::reloadActivity
         binding.viewmodel = viewModel
         binding.lifecycleOwner = this
         configureRecyclerView()
@@ -25,4 +26,10 @@ class MainActivity : AppCompatActivity() {
         binding.logsRv.adapter = LogsAdapter()
     }
 
+    private fun reloadActivity() {
+        finish()
+        overridePendingTransition(0, 0)
+        startActivity(intent)
+        overridePendingTransition(0, 0)
+    }
 }
