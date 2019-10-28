@@ -5,5 +5,6 @@ import com.example.session.di.sessionModule
 
 val appComponent = listOf(
     sessionModule,
+    appModule,
     mainModule
 )

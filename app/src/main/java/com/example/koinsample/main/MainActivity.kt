@@ -10,14 +10,16 @@ import com.example.koinsample.main.view.LogsAdapter
 import com.google.android.play.core.splitinstall.SplitInstallManager
 import com.google.android.play.core.splitinstall.SplitInstallManagerFactory
 import com.google.android.play.core.splitinstall.SplitInstallRequest
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
 class MainActivity : AppCompatActivity() {
 
     private val viewModel by viewModel<MainViewModel>()
+    private val splitInstallManager: SplitInstallManager by inject()
+
     private lateinit var binding: ActivityMainBinding
-    private lateinit var splitInstallManager: SplitInstallManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,7 +28,6 @@ class MainActivity : AppCompatActivity() {
         viewModel.loadAndLaunchUserDetails = ::loadAndLaunchUserDetails
         binding.viewmodel = viewModel
         binding.lifecycleOwner = this
-        splitInstallManager = SplitInstallManagerFactory.create(this)
         configureRecyclerView()
     }
 

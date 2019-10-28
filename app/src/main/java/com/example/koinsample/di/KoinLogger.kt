@@ -7,7 +7,7 @@ import org.koin.core.logger.Logger
 import org.koin.core.logger.MESSAGE
 import java.util.*
 
-class KoinLogger : Logger(Level.INFO) {
+class KoinLogger : Logger(Level.DEBUG) {
     private val _logs = MutableLiveData<List<String>>()
     val logs: LiveData<List<String>> = _logs
 
