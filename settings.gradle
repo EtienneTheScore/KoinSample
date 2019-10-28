@@ -1,2 +1,2 @@
-include ':app', ':session'
+include ':app', ':session', ':userdetails'
 rootProject.name='KoinSample'

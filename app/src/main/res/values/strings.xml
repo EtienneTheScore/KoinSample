@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">KoinSample</string>
+    <string name="title_userdetails">User Details</string>
 </resources>

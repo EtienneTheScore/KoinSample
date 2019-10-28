@@ -7,7 +7,8 @@ import com.example.session.SessionManager
 
 class MainViewModel(private val sessionManager: SessionManager) : ViewModel() {
 
-    lateinit var reload: (() -> Unit)
+    var reload: (() -> Unit)? = null
+    var loadAndLaunchUserDetails: (() -> Unit)? = null
 
     data class State(
         val logs: LiveData<List<String>>,
@@ -26,9 +27,10 @@ class MainViewModel(private val sessionManager: SessionManager) : ViewModel() {
             is SessionManager.Logged -> sessionManager.logOff()
             is SessionManager.Unlogged -> sessionManager.logIn()
         }
-        reload()
+        reload?.invoke()
     }
 
     fun onUserDetailsClick() {
+        loadAndLaunchUserDetails?.invoke()
     }
 }
