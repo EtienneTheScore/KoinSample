@@ -1,11 +1,14 @@
 package com.example.koinsample.main
 
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.example.koinsample.R
 import com.example.koinsample.databinding.ActivityMainBinding
+import com.example.koinsample.di.Log
+import com.example.koinsample.koinLogger
 import com.example.koinsample.main.view.LogsAdapter
 import com.google.android.play.core.splitinstall.SplitInstallManager
 import com.google.android.play.core.splitinstall.SplitInstallManagerFactory
@@ -22,6 +25,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        koinLogger.log(Log.Action("[MainActivity] ON CREATE"))
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         viewModel.reload = ::reloadActivity
@@ -29,6 +33,11 @@ class MainActivity : AppCompatActivity() {
         binding.viewmodel = viewModel
         binding.lifecycleOwner = this
         configureRecyclerView()
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        koinLogger.log(Log.Action("ON CONFIGURATION CHANGED"))
+        super.onConfigurationChanged(newConfig)
     }
 
     override fun onDestroy() {
@@ -49,7 +58,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadAndLaunchUserDetails() {
-        Timber.i("openUserDetails()")
+        Timber.i("loadAndLaunchUserDetails()")
 
         val moduleName = "userdetails"
         if (splitInstallManager.installedModules.contains(moduleName)) {

@@ -7,6 +7,14 @@
         <variable
             name="message"
             type="String" />
+
+        <variable
+            name="backgroundColor"
+            type="Integer" />
+
+        <variable
+            name="textColor"
+            type="Integer" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -20,8 +28,10 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@{context.getColor(backgroundColor)}"
             android:padding="8dp"
             android:text="@{message}"
+            android:textColor="@{context.getColor(textColor)}"
             tools:text="Log" />
     </androidx.cardview.widget.CardView>
 </layout>

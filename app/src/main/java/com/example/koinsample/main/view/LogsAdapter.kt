@@ -4,8 +4,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import com.example.koinsample.databinding.ItemLogBinding
+import com.example.koinsample.di.Log
 
-class LogsAdapter : ListAdapter<String, LogsViewHolder>(LogsDiffCall()) {
+class LogsAdapter : ListAdapter<Log, LogsViewHolder>(LogsDiffCall()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LogsViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding = ItemLogBinding.inflate(layoutInflater, parent, false)
