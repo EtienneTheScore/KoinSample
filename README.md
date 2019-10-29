@@ -70,7 +70,7 @@ val sessionModule = module {
 When logging in, we need a new `SessionManager` with a `Session`.
 We achieve that by closing the current Session Scope, then recreate it and declare the new `Session`.
 <br>
-Since this Session Scope has now a bounded `Session`, `SessionManager` will be an instance of `LoggedSessionManager`.
+Since this Session Scope has now a bound `Session`, `SessionManager` will be an instance of `LoggedSessionManager`.
 
 ```kotlin
 @Synchronized
