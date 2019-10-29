@@ -1,7 +1,7 @@
 # KoinSample
 
 Sample app displaying how [Koin](https://github.com/InsertKoinIO/koin) works with [Scopes](https://insert-koin.io/docs/2.0/documentation/koin-core/scope-api.html) and [On Demand Dynamic Modules](https://developer.android.com/studio/projects/dynamic-delivery/on-demand-delivery).
-<br>
+
 You can login to a fake user. Once you're logged in, you can navigate to the user details.
 
 ### What's inside?
@@ -28,7 +28,7 @@ In this sample, `SessionManager` is a scoped dependency in the Session Scope.
 ### Session Scope
 
 To create a scope, we need to choose a name and an ID. The scope's name is used to define scoped dependencies and its ID to retrieve those.
-<br><br>
+
 We also use an internal helper extension, so we don't have to deal with the scope's id and name elsewhere.
 
 ```kotlin
@@ -43,9 +43,8 @@ internal fun Koin.getSessionScope(): Scope {
 
 ### Session Module
 In this module, we define a SessionManaged as a scoped dependency.
-<br>
 When a `Session` is bound to this scope we return a `LoggedSessionManager`, otherwise an `UnloggedSessionManager` is returned.
-<br>
+
 By default, the session scope doesn't habe any `Session` bound to it.
 
 ```kotlin
@@ -69,7 +68,7 @@ val sessionModule = module {
 
 When logging in, we need a new `SessionManager` with a `Session`.
 We achieve that by closing the current Session Scope, then recreate it and declare the new `Session`.
-<br>
+
 Since this Session Scope has now a bound `Session`, `SessionManager` will be an instance of `LoggedSessionManager`.
 
 ```kotlin
@@ -102,4 +101,26 @@ val mainModule = module {
 ```
 
 ## Koin + On Demand Dynamic Modules
-TODO
+
+On Demand Module `userdetails` defines its own Koin module:
+```kotlin
+private val userDetailsFeatureModule = module {
+    viewModel { UserDetailsViewModel(sessionManager = getSessionScope().get()) }
+}
+```
+
+Since this On Demand Module isn't necessarily installed, we can't load `userDetailsFeatureModule` alongside our other Koin modules during app creation.
+However, Koin allows to dynamically load modules with `loadKoinModules()`.
+
+In addition, by using a lazy top level variable, we make sure that `userDetailsFeatureModule` is only loaded once:
+
+```kotlin
+private val loadFeature by lazy {
+    loadKoinModules(userDetailsFeatureModule)
+}
+
+internal fun injectFeature() = loadFeature
+```
+Then we call `injectFeature()` in `UserDetailsActivity`'s `onCreate` method.
+
+Credits: [Dynamic Feature Module with Dependency-less Navigation & Koin](https://proandroiddev.com/dynamic-feature-module-with-dependency-less-navigation-koin-774694f41f63)
