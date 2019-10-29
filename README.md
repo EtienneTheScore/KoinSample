@@ -32,11 +32,12 @@ To create a scope, we need to choose a name and an ID. The scope's name is used 
 We also use an internal helper extension, so we don't have to deal with the scope's id and name elsewhere.
 
 ```kotlin
-private const val SESSION_SCOPE_ID = "SESSION"
+private const val SESSION_SCOPE_ID = "SESSION_ID"
+internal const val SESSION_SCOPE_NAME = "SESSION_SCOPE_NAME"
 
 @Synchronized
 internal fun Koin.getSessionScope(): Scope {
-    return getOrCreateScope(SESSION_SCOPE_ID, named<SessionManager>())
+    return getOrCreateScope(SESSION_SCOPE_ID, named(SESSION_SCOPE_NAME))
 }
 ```
 
@@ -51,9 +52,9 @@ By default, the session scope doesn't habe any `Session` bound to it.
 val sessionModule = module {
     single { FakeSessionGenerator() }
 
-    scope(named<SessionManager>()) {
+    scope(named(SESSION_SCOPE_NAME)) {
         scoped {
-            val session = getOrNull<Session>()
+            val session = getSessionScope().getOrNull<Session>()
             if (session == null) {
                 UnloggedSessionManager(fakeSessionGenerator = get())
             } else {
@@ -65,14 +66,13 @@ val sessionModule = module {
 ```
 
 ### Reload a Scope
-TODO
-```kotlin
-//region Internal helper extensions
-@Synchronized
-internal fun Koin.getSessionScope(): Scope {
-    return getOrCreateScope(SESSION_SCOPE_ID, named<SessionManager>())
-}
 
+When logging in, we need a new `SessionManager` with a `Session`.
+We achieve that by closing the current Session Scope, then recreate it and declare the new `Session`.
+<br>
+Since this Session Scope has now a bounded `Session`, `SessionManager` will be an instance of `LoggedSessionManager`.
+
+```kotlin
 @Synchronized
 internal fun Koin.reloadSessionScope(session: Session?) {
     getSessionScope().close()
@@ -80,9 +80,7 @@ internal fun Koin.reloadSessionScope(session: Session?) {
         getSessionScope().declare(it)
     }
 }
-//enregion
 ```
-
 
 ### How to use
 
